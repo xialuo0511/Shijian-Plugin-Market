@@ -32,8 +32,8 @@ MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEqzGkzB6BcdRVfNWpZtI3ajzNGtSxY9wBxrY5J/R2qF9w
 
 ## 应用更新
 
-应用首版定位 0.1 Beta，标签为 `app-v0.1.0-beta.2`，GitHub 标记为 Pre-release；安装包为 `Shijian-0.1.0-beta.2-win-x64.zip`，另附同名 `.sha256`。插件和 SDK 的 v1 版本独立于应用版本。
+当前应用为 0.1 Beta，标签为 `app-v0.1.0-beta.3`，GitHub 标记为 Pre-release；推荐 `Shijian.Desktop-win-beta-Setup.exe`，便携包为 `Shijian-0.1.0-beta.3-win-x64.zip`，均附 `.sha256`。插件和 SDK 的 v1 版本独立于应用版本。
 
 Beta 客户端接受后续 `-beta.N` 及正式版；正式版客户端忽略 Beta。相同基础版本的正式版高于 Beta，Beta 编号按数字比较。主路径检查最近 100 条 Release，跳过插件和草稿。匿名 API 限流或服务不可用时，读取公开 Atom feed；该路径按命名约定识别通道，因此预览版必须使用 `-beta.N`，其他预览使用 `-alpha`、`-rc` 等后缀，插件使用 `plugins-` 前缀。
 
-只下载和核对哈希，不执行或覆盖正在运行的应用。更新前退出旧应用，解压新包，正常数据继续保存在 LocalAppData。
+便携版只下载和核对 ZIP 哈希，由用户退出旧版后解压。Beta.3 起提供安装版，使用固定 `app-updates` Release 分发差分/完整包及 `releases.win-beta.json`；更新需用户确认重启，程序与学习数据分目录，升级和卸载保留数据。详见 [安装与增量更新](installation-updates.md)。
