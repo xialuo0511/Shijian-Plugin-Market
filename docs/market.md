@@ -2,7 +2,7 @@
 
 市场仓库：https://github.com/xialuo0511/Shijian-Plugin-Market
 
-时笺“插件与 MCP → 插件市场”手动读取 `main/market/index.json`，下载该仓库 Release 中的 `.sjplugin`。目录最多 200 条，当前契约 API v1。首批官方插件为学习工具箱、周计划手记；安装后仍需用户启用。
+时笺“插件与 MCP → 插件市场”手动读取 `market-index` Release 的 `index.json`，下载该仓库 Release 中的 `.sjplugin`。目录源码保存在 `main/market/index.json`，维护时同步上传到目录 Release，避免依赖原始文件域名。目录最多 200 条，当前契约 API v1。首批官方插件为学习工具箱、周计划手记；安装后仍需用户启用。
 
 ## 认证含义
 
