@@ -9,7 +9,7 @@
 | 学习工具箱 1.0.0 | 按 1 / 3 / 7 / 14 天生成复习任务；安全 CSV 导出 | 🛡️ **时笺官方认证** | [StudyTools.sjplugin](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/StudyTools-1.0.0.sjplugin) |
 | 周计划手记 1.0.0 | 本周计划、成果进度、临近截止和复盘提纲导出为 Markdown | 🛡️ **时笺官方认证** | [WeeklyNotes.sjplugin](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/WeeklyNotes-1.0.0.sjplugin) |
 
-[Windows 时笺 0.1 Beta](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/tag/app-v0.1.0-beta.1) · [插件 SDK 1.0.0](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/Shijian-Plugin-SDK-1.0.0.zip) · [全部发行版本](https://github.com/xialuo0511/Shijian-Plugin-Market/releases)
+[Windows 时笺 0.1 Beta](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/tag/app-v0.1.0-beta.2) · [插件 SDK 1.0.0](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/Shijian-Plugin-SDK-1.0.0.zip) · [全部发行版本](https://github.com/xialuo0511/Shijian-Plugin-Market/releases)
 
 应用定位为 0.1 Beta 预览版；插件和 SDK 的 API v1 是独立版本。Beta 客户端可获取后续 Beta 或正式版，更新检查无需登录。
 
