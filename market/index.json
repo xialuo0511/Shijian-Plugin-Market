@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "plugins": [
+    {
+      "id": "org.shijian.study-tools",
+      "name": "\u5B66\u4E60\u5DE5\u5177\u7BB1",
+      "version": "1.0.0",
+      "description": "\u95F4\u9694\u590D\u4E60\u4EFB\u52A1\u4E0E\u5B89\u5168 CSV \u5BFC\u51FA",
+      "apiVersion": 1,
+      "permissions": [
+        "tasks.read",
+        "projects.read",
+        "tasks.write",
+        "files.export",
+        "state.read",
+        "state.write"
+      ],
+      "downloadUrl": "https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/StudyTools-1.0.0.sjplugin",
+      "archiveSha256": "AA78894AB1D5B9A87C156EB1C7B725B44C0FBA573E1B518C0BC9C8F5C1111CE8",
+      "manifestSha256": "EAF22EC7D385DF7648F59B6D7F264B9A9E622DEAE0E5B9FC773D3B44E4AFB49D",
+      "officialSignature": "q0XBXdJOGthcOcTZJ4qiXYzBHnGOA7S82ALtGqyrOL3JdNT\u002B7L/qMtM3Cq\u002BlaRSBMUs/KDcwmOJQ2DpEz1/7Kw=="
+    },
+    {
+      "id": "org.shijian.weekly-notes",
+      "name": "\u5468\u8BA1\u5212\u624B\u8BB0",
+      "version": "1.0.0",
+      "description": "\u5C06\u672C\u5468\u4EFB\u52A1\u3001\u6210\u679C\u8FDB\u5EA6\u3001\u4E34\u8FD1\u622A\u6B62\u4E8B\u9879\u4E0E\u590D\u76D8\u95EE\u9898\u6574\u7406\u6210 Markdown",
+      "apiVersion": 1,
+      "permissions": [
+        "tasks.read",
+        "projects.read",
+        "files.export"
+      ],
+      "downloadUrl": "https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/WeeklyNotes-1.0.0.sjplugin",
+      "archiveSha256": "7AB801E6B17E3029D10CD6E5D969C868A23BF030DE10F57E0CE0082837C455A4",
+      "manifestSha256": "157993552F45DED4AFF33A89A45915EE3E6CC46BC319462BEAB947743D8F89F2",
+      "officialSignature": "l2pg/wn0wkfiDvxRB9wdzHO5Nnu9zqexDNkLBRF9gkY6xMR197lKoaJHNEXgEj7kNFriu1lZNq84\u002BISgtMo5dw=="
+    }
+  ]
+}

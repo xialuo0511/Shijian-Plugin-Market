@@ -1,0 +1,8 @@
+**/bin/
+**/obj/
+.local/
+artifacts/
+*.db
+*.log
+*-private-key.*
+market-signing-key.*
