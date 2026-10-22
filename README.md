@@ -9,7 +9,7 @@
 | 学习工具箱 1.0.0 | 按 1 / 3 / 7 / 14 天生成复习任务；安全 CSV 导出 | 🛡️ **时笺官方认证** | [StudyTools.sjplugin](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/StudyTools-1.0.0.sjplugin) |
 | 周计划手记 1.0.0 | 本周计划、成果进度、临近截止和复盘提纲导出为 Markdown | 🛡️ **时笺官方认证** | [WeeklyNotes.sjplugin](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/WeeklyNotes-1.0.0.sjplugin) |
 
-[Windows 时笺 1.0.0](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/tag/app-v1.0.0) · [插件 SDK 1.0.0](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/Shijian-Plugin-SDK-1.0.0.zip) · [全部发行版本](https://github.com/xialuo0511/Shijian-Plugin-Market/releases)
+[插件 SDK 1.0.0](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/plugins-v1.0.0/Shijian-Plugin-SDK-1.0.0.zip) · [全部发行版本](https://github.com/xialuo0511/Shijian-Plugin-Market/releases)
 
 推荐在时笺“插件与 MCP → 加载插件市场”中安装，以验证官方签名并显示认证标识。也可下载 `.sjplugin` 后本地安装；手动安装不附认证证明。安装默认禁用，启用及运行均由用户选择。
 
@@ -29,3 +29,5 @@ DLL 插件拥有当前 Windows 用户的系统权限；独立进程用于隔离�
 时笺不提供账号登录信息存储。MCP / 插件状态和配对凭据由用户选择临时使用或 Windows 用户级加密保存，支持删除，默认备份不包含这些秘密数据。
 
 本仓库的插件示例、SDK 与文档采用 MIT 许可。Windows 应用二进制及随附第三方组件以应用包内说明和第三方许可为准。
+
+Windows 应用首版定位为 0.1 Beta，完成验证后发布。插件和 SDK 的 API v1 是独立版本。

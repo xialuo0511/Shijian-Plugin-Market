@@ -11,7 +11,7 @@
 `GET /api/v1/health`
 
 ```json
-{"app":"shijian","apiVersion":1,"version":"1.0.0","pairingRequired":true}
+{"app":"shijian","apiVersion":1,"version":"0.1.0-beta.1","pairingRequired":true}
 ```
 
 ## 预览课表同步

@@ -32,4 +32,8 @@ MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEqzGkzB6BcdRVfNWpZtI3ajzNGtSxY9wBxrY5J/R2qF9w
 
 ## 应用更新
 
-同仓库可发布 `app-vX.Y.Z` 的 Windows 应用包与同名 `.sha256`。时笺检查最近 100 条 Release，跳过插件标签、草稿和预览版，选择最高稳定版；只下载和核对哈希，不执行或覆盖正在运行的应用。更新前退出旧应用，解压新包，正常数据继续保存在 LocalAppData。
+应用首版定位 0.1 Beta，标签为 `app-v0.1.0-beta.1`，GitHub 标记为 Pre-release；安装包为 `Shijian-0.1.0-beta.1-win-x64.zip`，另附同名 `.sha256`。插件和 SDK 的 v1 版本独立于应用版本。
+
+Beta 客户端接受后续 `-beta.N` 及正式版；正式版客户端忽略 Beta。相同基础版本的正式版高于 Beta，Beta 编号按数字比较。主路径检查最近 100 条 Release，跳过插件和草稿。匿名 API 限流或服务不可用时，读取公开 Atom feed；该路径按命名约定识别通道，因此预览版必须使用 `-beta.N`，其他预览使用 `-alpha`、`-rc` 等后缀，插件使用 `plugins-` 前缀。
+
+只下载和核对哈希，不执行或覆盖正在运行的应用。更新前退出旧应用，解压新包，正常数据继续保存在 LocalAppData。
