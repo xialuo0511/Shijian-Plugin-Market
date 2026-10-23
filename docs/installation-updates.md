@@ -4,7 +4,11 @@
 
 ## 使用
 
-下载 `Shijian.Desktop-win-beta-Setup.exe`，安装到当前用户目录，提供桌面、开始菜单及系统卸载入口。程序目录 `%LOCALAPPDATA%/Shijian.Desktop` 与数据 `%LOCALAPPDATA%/Shijian` 分开。升级和卸载保留数据库、插件及用户选择保存的加密凭据。
+下载 `Shijian-0.1.0-beta.3-win-x64-Install.exe`，双击后在“安装位置”填写路径，或点击“浏览…”选择文件夹。支持其他本机磁盘、中文和空格路径，例如 `D:\Apps\时笺`。默认程序目录 `%LOCALAPPDATA%/Shijian.Desktop`，学习数据仍位于 `%LOCALAPPDATA%/Shijian`。升级沿用所选程序目录，卸载保留数据库、插件及用户选择保存的加密凭据。
+
+安装目录须为空文件夹，或属于同一应用的已有安装；拒绝磁盘根目录、与学习数据重合的目录及其他已有内容的文件夹。已安装时默认使用当前目录；如需换盘，先通过 Windows 设置卸载程序，再选择新目录安装，原学习数据保留。提供桌面、开始菜单及系统卸载入口。
+
+`Install.exe` 内嵌并校验原始安装资源，是包含运行库的单文件安装入口。原 `Shijian.Desktop-win-beta-Setup.exe` 保留作为底层安装器，公开应用包和增量更新基线不变。自动化可用 `Install.exe --silent --installto "D:\Apps\时笺"`。
 
 便携版首次迁移需要完整 Setup。先退出旧版再安装；默认数据位置相同，无需手动搬数据库。安装版在设置中手动检查更新，确认下载后校验差分包、重建完整载荷；不可用时回退完整包。再次确认后保存专注、断开扩展，正常关闭并由更新器替换文件和重新启动。取消安装确认会保留下载缓存，下次可继续。
 
@@ -19,9 +23,13 @@
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Build.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Pack-Installer.ps1
+# 为已有发行版增加选择目录入口，无需重建既有应用包
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Build-InstallerUi.ps1 -Engine artifacts/installer/Shijian.Desktop-win-beta-Setup.exe
 ```
 
 `dotnet-tools.json` 固定 vpk 版本。每次构建先递增 `Directory.Build.props` 中的 `ShijianVersion`。保留上次发布的完整 `.nupkg` 在 `artifacts/installer/`；本次打包自动生成差分包。若换机/CI，从上次 Release 下载已发布的完整包作为基线再打包，禁止重新构造既有版本的基线。首次安装版没有上一安装基线，因此 Beta.3 只发布完整包；之后才生成生产差分。
+
+`Pack-Installer.ps1` 同时生成可选择路径的 `Install.exe`；`Build-InstallerUi.ps1` 可从既有 Setup 单独生成此入口，以原安装资源 SHA-256 绑定内容。已发布的同名文件不可覆盖；安装入口修订使用新的资产名称，应用完整包/差分包保持不变。
 
 发布步骤：
 
