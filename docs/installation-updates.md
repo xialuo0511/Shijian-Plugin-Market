@@ -1,10 +1,10 @@
 # 安装与增量更新
 
-应用版本 0.1.0-beta.6，更新通道 `win-beta`，安装标识 `Shijian.Desktop`。使用固定版本 Velopack 1.2.161；不使用托管 Flow 服务或账号凭据。
+应用版本 0.1.0-beta.7，更新通道 `win-beta`，安装标识 `Shijian.Desktop`。使用固定版本 Velopack 1.2.161；不使用托管 Flow 服务或账号凭据。
 
 ## 使用
 
-下载 `Shijian-0.1.0-beta.6-win-x64-Install.exe`，双击后在“安装位置”填写路径，或点击右侧文件夹按钮选择文件夹。支持其他本机磁盘、中文和空格路径，例如 `D:\Apps\时笺`。默认程序目录 `%LOCALAPPDATA%/Shijian.Desktop`，学习数据仍位于 `%LOCALAPPDATA%/Shijian`。升级沿用所选程序目录，卸载保留数据库、插件及用户选择保存的加密凭据。
+下载 `Shijian-0.1.0-beta.7-win-x64-Install.exe`，双击后在“安装位置”填写路径，或点击右侧文件夹按钮选择文件夹。支持其他本机磁盘、中文和空格路径，例如 `D:\Apps\时笺`。默认程序目录 `%LOCALAPPDATA%/Shijian.Desktop`，学习数据仍位于 `%LOCALAPPDATA%/Shijian`。升级沿用所选程序目录，卸载保留数据库、插件及用户选择保存的加密凭据。
 
 安装目录须为空文件夹，或属于同一应用的已有安装；拒绝磁盘根目录、与学习数据重合的目录及其他已有内容的文件夹。已安装时默认使用当前目录；如需换盘，先通过 Windows 设置卸载程序，再选择新目录安装，原学习数据保留。提供桌面、开始菜单及系统卸载入口。
 
