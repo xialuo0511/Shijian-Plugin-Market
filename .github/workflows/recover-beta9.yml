@@ -2,6 +2,10 @@ name: Recover Beta.9 release files
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/recover-beta9.yml'
 
 permissions:
   contents: write
