@@ -1,0 +1,100 @@
+name: Recover Beta.9 release files
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: recover-beta9-release
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    if: github.repository == 'xialuo0511/Shijian-Plugin-Market'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Restore and verify original release bytes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: xialuo0511/Shijian-Plugin-Market
+          RECOVERY_REF: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v zstd >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y zstd
+          fi
+          python3 - <<'PY'
+          import base64
+          import hashlib
+          import json
+          import os
+          import pathlib
+          import subprocess
+          import tempfile
+
+          repo = 'xialuo0511/Shijian-Plugin-Market'
+          assert os.environ['GH_REPO'] == repo
+          baseline_id, draft_id, channel_id = 421884014, 421935797, 420904120
+          entries = [
+              dict(base='Shijian.Desktop-0.1.0-beta.8-win-beta-full.nupkg', file='Shijian.Desktop-0.1.0-beta.9-win-beta-full.nupkg', patch='transfer-full.zst', baseSha='c85ae36c03edb79c76788f3d9675f7acd077a246f0306314a67570640c96b259', patchSha='65df88bfde39c46cfec678be3fc3d0d7eccc001ec894bdd927132ea5eac72368', sha='c70b3384ca8b4bb023095883c2b17273765aaca1865ee8df8297488ba76a863c', releases=[draft_id, channel_id]),
+              dict(base='Shijian-0.1.0-beta.8-win-x64-Install.exe', file='Shijian-0.1.0-beta.9-win-x64-Install.exe', patch='transfer-installer.zst', baseSha='71e4feefaea1fdbf5cd0e011db4122d6df07bd4a2d548f8e3d4d71aad6ce06c5', patchSha='0879eb77e59869d4cb62cf3ee5a07e2f6d931b5481298e29eef335f954838bdf', sha='d5745b512bdf6851f50d0fbfb348d348d24be12b1ee8d9ce5149c54e5fc3518d', releases=[draft_id]),
+              dict(base='Shijian-0.1.0-beta.8-win-x64.zip', file='Shijian-0.1.0-beta.9-win-x64.zip', patch='transfer-portable.zst', baseSha='945a2975a6793091a9f66aeb6d7306b5d7bfc8d1a4042dffd26a71656beeaae0', patchSha='17d29ad2bb2dfd91b47b4f3081035243e1e80e1cd92936ca404e641853a20e0a', sha='e3643979bd44b71893590405c3cb7d68224c4b9dcc3e0cfdacfb44e1de643728', releases=[draft_id]),
+          ]
+
+          def metadata(release_id):
+              return json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/releases/{release_id}']))
+
+          baseline, draft = metadata(baseline_id), metadata(draft_id)
+          assert baseline['tag_name'] == 'app-v0.1.0-beta.8' and not baseline['draft']
+          assert draft['tag_name'] == 'app-v0.1.0-beta.9' and draft['draft'], 'Only the unpublished draft can be recovered'
+          assert metadata(channel_id)['tag_name'] == 'app-updates'
+
+          def digest(path):
+              with path.open('rb') as stream:
+                  return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+          def download(release, name, expected, path):
+              assert pathlib.PurePath(name).name == name
+              asset, = [a for a in release['assets'] if a['name'] == name]
+              assert asset['state'] == 'uploaded' and asset['digest'] == 'sha256:' + expected
+              assert 0 < asset['size'] < 512 * 1024 * 1024
+              with path.open('xb') as output:
+                  subprocess.run(['gh', 'api', f'repos/{repo}/releases/assets/{asset["id"]}', '-H', 'Accept: application/octet-stream'], stdout=output, check=True)
+              assert digest(path) == expected, name
+
+          def download_patch(name, expected, path):
+              assert pathlib.PurePath(name).name == name
+              content = subprocess.check_output(['gh', 'api', f'repos/{repo}/contents/.release-transfer/beta9/{name}?ref={os.environ["RECOVERY_REF"]}', '--jq', '.content'])
+              data = base64.b64decode(content)
+              assert len(data) < 2 * 1024 * 1024
+              path.write_bytes(data)
+              assert digest(path) == expected, name
+
+          with tempfile.TemporaryDirectory(prefix='shijian-release-transfer-') as directory:
+              root = pathlib.Path(directory)
+              for entry in entries:
+                  old, patch, new = root / entry['base'], root / entry['patch'], root / entry['file']
+                  download(baseline, entry['base'], entry['baseSha'], old)
+                  download_patch(entry['patch'], entry['patchSha'], patch)
+                  subprocess.run(['zstd', '-d', '--long=29', '--patch-from=' + str(old), str(patch), '-o', str(new)], check=True)
+                  assert digest(new) == entry['sha'], entry['file']
+                  print('VERIFIED original bytes:', entry['file'], flush=True)
+              for entry in entries:
+                  new = root / entry['file']
+                  for release_id in entry['releases']:
+                      release = metadata(release_id)
+                      existing = [a for a in release['assets'] if a['name'] == entry['file']]
+                      if existing:
+                          asset, = existing
+                          assert asset['state'] == 'uploaded' and asset['digest'] == 'sha256:' + entry['sha'] and asset['size'] == new.stat().st_size
+                      else:
+                          subprocess.run(['gh', 'release', 'upload', release['tag_name'], str(new), '--repo', repo], check=True)
+                          asset, = [a for a in metadata(release_id)['assets'] if a['name'] == entry['file']]
+                          assert asset['state'] == 'uploaded' and asset['digest'] == 'sha256:' + entry['sha'] and asset['size'] == new.stat().st_size
+                      print('VERIFIED server asset:', release['tag_name'], entry['file'], flush=True)
+          PY
