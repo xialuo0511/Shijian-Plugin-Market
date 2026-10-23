@@ -1,0 +1,93 @@
+name: Finalize verified Beta.9 release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/finalize-beta9.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: finalize-beta9-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'xialuo0511/Shijian-Plugin-Market'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Verify immutable packages, switch feed and publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: xialuo0511/Shijian-Plugin-Market
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import pathlib
+          import subprocess
+          import tempfile
+          
+          repo = 'xialuo0511/Shijian-Plugin-Market'
+          expected = json.loads(r'''{"releases.win-beta.json":[3595,"sha256:b24f25afb96753039196368333ff0635a1718f4c1dc11a89ad9422f097c0fb75"],"releases.win-beta.json.sha256":[90,"sha256:78da1dc6eb1e1f52d038b7e2e19e54b8a35b2053192d033c059b4a82ce58b3b7"],"Shijian-0.1.0-beta.9-win-x64-Install.exe":[187311241,"sha256:d5745b512bdf6851f50d0fbfb348d348d24be12b1ee8d9ce5149c54e5fc3518d"],"Shijian-0.1.0-beta.9-win-x64-Install.exe.sha256":[108,"sha256:5774cd07d1146522724f6dd875770710b5709d69195b8e5875a725205a266989"],"Shijian-0.1.0-beta.9-win-x64.zip":[111944502,"sha256:e3643979bd44b71893590405c3cb7d68224c4b9dcc3e0cfdacfb44e1de643728"],"Shijian-0.1.0-beta.9-win-x64.zip.sha256":[100,"sha256:a7473707cc91e015adee3ea3eddc6d232b666b8ae63c26e99cf8f18950231382"],"Shijian.Desktop-0.1.0-beta.9-win-beta-delta.nupkg":[443547,"sha256:a443b2aabeb07f8f395606e1289ef85204de75763e16169a75ee30e532912f7d"],"Shijian.Desktop-0.1.0-beta.9-win-beta-delta.nupkg.sha256":[117,"sha256:69b1df8fd8e956b9199c5ea9c5e7a417fa3d33d7a545f043035c18fb4eab86e2"],"Shijian.Desktop-0.1.0-beta.9-win-beta-full.nupkg":[114642499,"sha256:c70b3384ca8b4bb023095883c2b17273765aaca1865ee8df8297488ba76a863c"],"Shijian.Desktop-0.1.0-beta.9-win-beta-full.nupkg.sha256":[116,"sha256:f4935188855516aa3eeb95fb3dbaf6058557d4df9d76511e8f6f22ca35f70d8c"]}''')
+          preserved = json.loads(r'''{"releases.win.json":[669237658,14,"sha256:e5e2bd8d77059a7574d8a62121209642bee37dfe7edf2e96e7f7fb324ae5f061"],"releases.win.json.sha256":[669237659,85,"sha256:f5e51e9df38c18161aa1f01112c79b0ba1557cd22538f41a5a7e16bfb661a4d8"],"Shijian.Desktop-0.1.0-beta.3-win-beta-full.nupkg":[666315869,113677040,"sha256:f7c3ae647c41b7a11e2e68894283de8a38d1f1147f6dd2e6f7b451f66713a803"],"Shijian.Desktop-0.1.0-beta.3-win-beta-full.nupkg.sha256":[666318313,116,"sha256:ef84160463da42d2edb68740fbba7c625cc570a41be829b79405702d2eb8e74b"],"Shijian.Desktop-0.1.0-beta.4-win-beta-delta.nupkg":[668080087,380976,"sha256:8302ef82e574b2bd7d91a8e64a46913d3af1497a5331ae3be9d0cf58bd0f9bf8"],"Shijian.Desktop-0.1.0-beta.4-win-beta-delta.nupkg.sha256":[668080086,117,"sha256:21529b98eac29013eaae2f96b536c3c5158f195f045eec0c3377a342268f5008"],"Shijian.Desktop-0.1.0-beta.4-win-beta-full.nupkg":[668079707,113766815,"sha256:33d62d01a5642cb946cdf46b8e420733ae18cc7197e6f43bd115e1928a71d4d8"],"Shijian.Desktop-0.1.0-beta.4-win-beta-full.nupkg.sha256":[668080084,116,"sha256:f06445f5b28cd33efc0f24c07b0ee827757370aec6c5cfe5fc0b4fda91e032f8"],"Shijian.Desktop-0.1.0-beta.5-win-beta-delta.nupkg":[668141418,1121402,"sha256:c133171788dd8cee8fa689d383356d8ff0ec05fa8e392c4cc9b6f466ea0c2b21"],"Shijian.Desktop-0.1.0-beta.5-win-beta-delta.nupkg.sha256":[668141421,117,"sha256:d136df47000e7bfc36aafed45fb17906311330b4c9e1f4055eca58b3b9ddc728"],"Shijian.Desktop-0.1.0-beta.5-win-beta-full.nupkg":[668140701,114601970,"sha256:92205f7d340eb8df475b7dd162be9ad14a680e27845732d4d2aa515708f92d1d"],"Shijian.Desktop-0.1.0-beta.5-win-beta-full.nupkg.sha256":[668141419,116,"sha256:16a658662e630862bbd904aa54acfa95a156544f9c74e4460c73f7d14e29ead7"],"Shijian.Desktop-0.1.0-beta.6-win-beta-delta.nupkg":[668576392,419622,"sha256:f3ab34b34bfb7bf1a726f79f7ce0a22dbf470ac96c26029083656959decec625"],"Shijian.Desktop-0.1.0-beta.6-win-beta-delta.nupkg.sha256":[668576391,117,"sha256:4aea36f3b486a4dff9c404c9896916c79434ec03d7f22378bb9b8538cdd79b8b"],"Shijian.Desktop-0.1.0-beta.6-win-beta-full.nupkg":[668574136,114605572,"sha256:f88f6cef1d938a1ce5c2b4438fb476c2f14ee8da3aef4d7fd00c4af79baa1fe6"],"Shijian.Desktop-0.1.0-beta.6-win-beta-full.nupkg.sha256":[668576393,116,"sha256:0fac93bf5263a47817b940010adca514206be3624017db9165d1bed1756c0154"],"Shijian.Desktop-0.1.0-beta.7-win-beta-delta.nupkg":[668977897,422339,"sha256:4a9215874435577a61c4c249011e72e6e786b73d8d492a45045f2d3d1b328bd4"],"Shijian.Desktop-0.1.0-beta.7-win-beta-delta.nupkg.sha256":[668977896,117,"sha256:db2a90dc8bea9ff2fdf8287a32e0ccd000a9f53a55545ebe021f0a1ffc07bc9a"],"Shijian.Desktop-0.1.0-beta.7-win-beta-full.nupkg":[668975338,114610290,"sha256:c657eb901ba83828027d2bee5455eac2736333033e245ba092f5a5537c45b090"],"Shijian.Desktop-0.1.0-beta.7-win-beta-full.nupkg.sha256":[668977898,116,"sha256:776b9bd92136f2db1289f3e8ef5d708f0dbcefe0e5074dbceaeed63dd5a13ec9"],"Shijian.Desktop-0.1.0-beta.8-win-beta-delta.nupkg":[669237660,458631,"sha256:879c6857e52d2131e1c63105ffb4ae391f5d264eddb04fb7793004ce2781ba90"],"Shijian.Desktop-0.1.0-beta.8-win-beta-delta.nupkg.sha256":[669237672,117,"sha256:33d13ca2f374a483a57f268628e5a934dd409bec2abe0bb9a67dbe4efeee7e95"],"Shijian.Desktop-0.1.0-beta.8-win-beta-full.nupkg":[669235223,114630076,"sha256:c85ae36c03edb79c76788f3d9675f7acd077a246f0306314a67570640c96b259"],"Shijian.Desktop-0.1.0-beta.8-win-beta-full.nupkg.sha256":[669237668,116,"sha256:b2688741bafff955b75b5a5bf85672dc36801c33bcfbe0bae4db66200b686736"]}''')
+          def metadata(rid):
+              return json.loads(subprocess.check_output(['gh', 'api', f'repos/{repo}/releases/{rid}']))
+          def assets(release):
+              return {a['name']: a for a in release['assets']}
+          def verify_preserved(release):
+              current = assets(release)
+              for name, (aid, size, sha) in preserved.items():
+                  a = current[name]
+                  assert [a['id'], a['size'], a['digest']] == [aid, size, sha] and a['state'] == 'uploaded', name
+          
+          draft, channel = metadata(421935797), metadata(420904120)
+          assert draft['tag_name'] == 'app-v0.1.0-beta.9' and draft['draft']
+          assert channel['tag_name'] == 'app-updates'
+          actual = assets(draft)
+          assert len(actual) == 10 and set(actual) == set(expected)
+          for name, (size, sha) in expected.items():
+              a = actual[name]
+              assert [a['size'], a['digest']] == [size, sha] and a['state'] == 'uploaded', name
+          verify_preserved(channel)
+          with tempfile.TemporaryDirectory(prefix='shijian-finalize-') as directory:
+              root = pathlib.Path(directory)
+              for name in ['releases.win-beta.json', 'releases.win-beta.json.sha256']:
+                  path = root / name
+                  with path.open('xb') as out:
+                      subprocess.run(['gh', 'api', f'repos/{repo}/releases/assets/{actual[name]["id"]}', '-H', 'Accept: application/octet-stream'], stdout=out, check=True)
+                  assert 'sha256:' + hashlib.sha256(path.read_bytes()).hexdigest() == expected[name][1]
+              feed = json.loads((root / 'releases.win-beta.json').read_text())
+              checksum = (root / 'releases.win-beta.json.sha256').read_text().split()[0].lower()
+              assert checksum == hashlib.sha256((root / 'releases.win-beta.json').read_bytes()).hexdigest()
+              assert len(feed['Assets']) == 13
+              available = assets(channel)
+              for item in feed['Assets']:
+                  assert item['PackageId'] == 'Shijian.Desktop' and item['Type'] in ['Full', 'Delta']
+                  a = available[item['FileName']]
+                  assert a['state'] == 'uploaded' and a['size'] == item['Size']
+                  if item['Version'] == '0.1.0-beta.9':
+                      assert a['digest'] == expected[item['FileName']][1]
+              subprocess.run(['gh', 'release', 'upload', 'app-updates', str(root / 'releases.win-beta.json'), str(root / 'releases.win-beta.json.sha256'), '--clobber', '--repo', repo], check=True)
+              channel = metadata(420904120)
+              verify_preserved(channel)
+              for name in ['releases.win-beta.json', 'releases.win-beta.json.sha256']:
+                  assert assets(channel)[name]['digest'] == expected[name][1]
+              notes = root / 'channel-notes.md'
+              notes.write_text('时笺 Windows 安装版的公开更新目录。\\n\\n首次安装：[0.1 Beta.9 下载页](https://github.com/xialuo0511/Shijian-Plugin-Market/releases/tag/app-v0.1.0-beta.9)。已安装用户在应用设置中检查更新。\\n\\nBeta 与正式版偏好分别读取 releases.win-beta.json 和 releases.win.json。更新经用户确认，保留学习数据和插件凭据。'.replace('\\n', '\n'))
+              subprocess.run(['gh', 'release', 'edit', 'app-updates', '--repo', repo, '--notes-file', str(notes)], check=True)
+              subprocess.run(['gh', 'release', 'edit', 'app-v0.1.0-beta.9', '--repo', repo, '--draft=false', '--prerelease', '--latest=false'], check=True)
+              published = metadata(421935797)
+              assert not published['draft'] and published['prerelease']
+              base = f'https://github.com/{repo}/releases/download/'
+              subprocess.run(['curl', '--fail', '--location', '--head', '--silent', '--show-error', '--max-time', '60', '--output', '/dev/null', base + 'app-v0.1.0-beta.9/Shijian-0.1.0-beta.9-win-x64-Install.exe'], check=True)
+              subprocess.run(['curl', '--fail', '--location', '--silent', '--show-error', '--max-time', '60', '--output', str(root / 'public-feed.json'), base + 'app-updates/releases.win-beta.json'], check=True)
+              assert hashlib.sha256((root / 'public-feed.json').read_bytes()).hexdigest() == checksum
+          print('PUBLISHED AND VERIFIED Beta.9; anonymous installer and update feed accessible')
+          
+          PY
