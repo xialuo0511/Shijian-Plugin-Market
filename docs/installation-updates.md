@@ -1,10 +1,10 @@
 # 安装与增量更新
 
-应用版本 0.1.0-beta.7，更新通道 `win-beta`，安装标识 `Shijian.Desktop`。使用固定版本 Velopack 1.2.161；不使用托管 Flow 服务或账号凭据。
+应用版本 0.1.0-beta.8，更新通道 `win-beta`，安装标识 `Shijian.Desktop`。使用固定版本 Velopack 1.2.161；不使用托管 Flow 服务或账号凭据。
 
 ## 使用
 
-下载 `Shijian-0.1.0-beta.7-win-x64-Install.exe`，双击后在“安装位置”填写路径，或点击右侧文件夹按钮选择文件夹。支持其他本机磁盘、中文和空格路径，例如 `D:\Apps\时笺`。默认程序目录 `%LOCALAPPDATA%/Shijian.Desktop`，学习数据仍位于 `%LOCALAPPDATA%/Shijian`。升级沿用所选程序目录，卸载保留数据库、插件及用户选择保存的加密凭据。
+下载 `Shijian-0.1.0-beta.8-win-x64-Install.exe`，双击后在“安装位置”填写路径，或点击右侧文件夹按钮选择文件夹。支持其他本机磁盘、中文和空格路径，例如 `D:\Apps\时笺`。默认程序目录 `%LOCALAPPDATA%/Shijian.Desktop`，学习数据仍位于 `%LOCALAPPDATA%/Shijian`。升级沿用所选程序目录，卸载保留数据库、插件及用户选择保存的加密凭据。
 
 安装目录须为空文件夹，或属于同一应用的已有安装；拒绝磁盘根目录、与学习数据重合的目录及其他已有内容的文件夹。已安装时默认使用当前目录；如需换盘，先通过 Windows 设置卸载程序，再选择新目录安装，原学习数据保留。提供桌面、开始菜单及系统卸载入口。
 
@@ -19,6 +19,8 @@
 卸载入口约 162 KB，复用安装目录内的 .NET 运行库。模板位于 `current/Assets/Uninstall.exe`，支持程序集位于 `current/`；无需额外安装运行库或一套界面框架。SDK 原生启动器先等待卸载确认进程结束，再开始清理，避免运行中的文件阻止卸载。
 
 ## 更新目录
+
+设置可选择 Beta／正式版偏好，并提示在下个版本更新时生效。安装版分别读取 `releases.win-beta.json` 和 `releases.win.json`，禁止降级；便携版使用同一偏好过滤发布标签。正式版尚无新发布时保留当前版本。启动检查在首帧后后台进行，只有新版时显示角落提醒，可关闭，不会自行下载安装。
 
 默认公开目录：`https://github.com/xialuo0511/Shijian-Plugin-Market/releases/download/app-updates/`。客户端读取 `releases.win-beta.json`，从同目录下载版本命名的 `.nupkg`。不调用 GitHub 匿名 API，不需要登录信息。
 

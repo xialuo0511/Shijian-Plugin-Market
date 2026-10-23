@@ -34,7 +34,7 @@ MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEqzGkzB6BcdRVfNWpZtI3ajzNGtSxY9wBxrY5J/R2qF9w
 
 Beta.4 增加安装根目录的 `Uninstall.exe`，确认后卸载程序并保留学习数据；安装界面跟随系统默认 Fluent 配色。
 
-当前应用为 0.1 Beta，标签为 `app-v0.1.0-beta.7`，GitHub 标记为 Pre-release；推荐可选择目录的 `Shijian-0.1.0-beta.7-win-x64-Install.exe`，便携包为 `Shijian-0.1.0-beta.7-win-x64.zip`，均附 `.sha256`。插件和 SDK 的 v1 版本独立于应用版本。
+当前应用为 0.1 Beta，标签为 `app-v0.1.0-beta.8`，GitHub 标记为 Pre-release；推荐可选择目录的 `Shijian-0.1.0-beta.8-win-x64-Install.exe`，便携包为 `Shijian-0.1.0-beta.8-win-x64.zip`，均附 `.sha256`。插件和 SDK 的 v1 版本独立于应用版本。
 
 Beta 客户端接受后续 `-beta.N` 及正式版；正式版客户端忽略 Beta。相同基础版本的正式版高于 Beta，Beta 编号按数字比较。主路径检查最近 100 条 Release，跳过插件和草稿。匿名 API 限流或服务不可用时，读取公开 Atom feed；该路径按命名约定识别通道，因此预览版必须使用 `-beta.N`，其他预览使用 `-alpha`、`-rc` 等后缀，插件使用 `plugins-` 前缀。
 
